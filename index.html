@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angor</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Style for sections */
+        section {
+            height: 100vh;
+            padding: 40px;
+            color: white;
+            font-size: 20px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Different background colors for each section */
+        #section1 { background-color: #1abc9c; }
+        #section2 { background-color: #3498db; }
+        #section3 { background-color: #9b59b6; }
+        #section4 { background-color: #e67e22; }
+        #section5 { background-color: #e74c3c; }
+
+        /* Bitcoin image */
+        #bitcoin {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            width: 100px;
+            z-index: 10;
+            transition: transform 1s ease, top 1s ease, left 1s ease, width 1s ease, height 1s ease;
+        }
+
+        /* Circles in each section */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid white;
+            background-color: transparent;
+            transition: transform 1s ease, width 1s ease, height 1s ease;
+        }
+
+        /* Style for content in each section */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Bitcoin image that moves across sections -->
+<img id="bitcoin" src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin">
+
+<!-- Sections with different content -->
+<section id="section1">
+    <div class="content">
+        <h2>What is Angor?</h2>
+        <p>Angor is a crowdfunding platform. Like all crowdfunding platforms, Angor allows founders to raise capital from a group of investors to finance various projects, such as innovative open-source software, for instance.</p>
+        <div class="circle"></div>
+    </div>
+</section>
+
+<section id="section2">
+    <div class="content">
+        <h2>What makes Angor different?</h2>
+        <p>1. First, Angor focuses on BITCOIN investments only. Investors must fund a BTC wallet.<br>
+           2. Second, the platform is FULLY DECENTRALISED meaning no middlemen are involved. All transactions are processed on the Bitcoin network, and metadata required for the funding projects is stored on Nostr.<br>
+           3. Last but not least, funds are released in stages, and investors can recover any unspent funds.</p>
+        <div class="circle"></div>
+    </div>
+</section>
+
+<section id="section3">
+    <div class="content">
+        <h2>What are the benefits?</h2>
+        <p>1. The ability to recall unspent funds mitigates investors' financial risk.<br>
+           2. Investors' and founders' interests are better aligned.<br>
+           3. Bitcoin and Nostr offer improved security and privacy. Angor leverages Taproot Bitcoin update for conditional spending and multisig functionality.</p>
+        <div class="circle"></div>
+    </div>
+</section>
+
+<section id="section4">
+    <div class="content">
+        <h2>How does it work?</h2>
+        <p>1. Founders create projects and define funding goals.<br>
+           2. Investors commit BTC to projects.<br>
+           3. Funds are timelocked and released in stages.<br>
+           4. Investors can withdraw unspent funds at any time.</p>
+        <div class="circle"></div>
+    </div>
+</section>
+
+<section id="section5">
+    <div class="content">
+        <h2>Conclusion</h2>
+        <p>Angor is a secure, decentralized, and Bitcoin-only platform for crowdfunding, offering investors and founders a safe and aligned way to collaborate on projects using Bitcoin and Nostr protocols.</p>
+        <div class="circle"></div>
+    </div>
+</section>
+
+<script>
+    const bitcoinImage = document.getElementById('bitcoin');
+    const sections = document.querySelectorAll('section');
+    const circles = document.querySelectorAll('.circle');
+
+    // Initialize random circles in each section
+    circles.forEach(circle => {
+        const randomSize = Math.random() * 100 + 50; // Random size between 50px and 150px
+        const randomTop = Math.random() * 60 + 20; // Random top position
+        const randomLeft = Math.random() * 60 + 20; // Random left position
+        circle.style.width = `${randomSize}px`;
+        circle.style.height = `${randomSize}px`;
+        circle.style.top = `${randomTop}%`;
+        circle.style.left = `${randomLeft}%`;
+    });
+
+    window.addEventListener('scroll', () => {
+        let currentSectionIndex = 0;
+
+        // Determine which section the user is currently in
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                currentSectionIndex = index;
+            }
+        });
+
+        // Get the corresponding circle in the current section
+        const currentCircle = circles[currentSectionIndex];
+        const circleRect = currentCircle.getBoundingClientRect();
+
+        // Move the bitcoin image into the circle and resize it to fit the circle
+        bitcoinImage.style.top = `${circleRect.top + circleRect.height / 2 - bitcoinImage.offsetHeight / 2}px`;
+        bitcoinImage.style.left = `${circleRect.left + circleRect.width / 2 - bitcoinImage.offsetWidth / 2}px`;
+        bitcoinImage.style.width = `${circleRect.width}px`;
+        bitcoinImage.style.height = `${circleRect.height}px`;
+
+        // Add rotation effect based on scroll position
+        bitcoinImage.style.transform = `rotate(${window.scrollY / 5}deg)`;
+    });
+</script>
+
+</body>
+</html>
